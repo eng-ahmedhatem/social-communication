@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>social communication</title>
-  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="asets/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -15,16 +15,18 @@
     .loader {
       --c: no-repeat radial-gradient(farthest-side, #000000 93%, #00000000);
     }
+
     .loader:before {
-    background: #000000;
+      background: #000000;
+    }
+
+    .loader:after {
+
+      background: #000000;
+    }
+
   }
 
-  .loader:after {
-
-    background: #000000;
-  }
-    
-  }
   .loader {
     width: 30px;
     height: 40px;
@@ -60,6 +62,28 @@
     border-radius: 50%;
     background: #ffffff;
     animation: l6-3 1.5s linear infinite;
+
+  }
+
+  #loading span {
+    /* display: none; */
+    animation: letterSpacing 1s infinite linear alternate;
+
+  }
+
+  #loading {
+    transition: .3s;
+  }
+
+  .post .body__img img {
+    width: 100%;
+    height: 450px;
+  }
+
+  @keyframes letterSpacing {
+    to {
+      letter-spacing: 2px;
+    }
   }
 
   @keyframes l6-0 {
@@ -151,10 +175,10 @@
 
   <div class="modal fade show" id="content_newPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-   
 
-      </div>
-    </div>
+
+  </div>
+  </div>
   </div>
 
 
@@ -163,7 +187,30 @@
 
 
 
-
+  <!-- ! confirm delete post -->
+  <!-- Modal -->
+  <div class="modal fade" id="confirm_delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button"
+            class="close btn bg-secondary rounded-circle d-flex align-items-center justify-content-center"
+            data-dismiss="modal" aria-label="Close">
+            <i class="fa-solid fs-5  fa-xmark fa-fade"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4>Are you sure you want to delete this post?</h4>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="btn_delete" class="btn btn-danger">Delete</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -388,27 +435,27 @@
 
 
 
-
   <div class="container d-flex flex-column gap-5">
     <nav class="navbar navbar-expand-lg bg-body-tertiary rounded-1  border-bottom border-primary border-opacity-50">
-      <div class="container-fluid">
-        <a class="navbar-brand m-3" href="#" id="nav_logo"><i class="fa-brands fs-2 fa-bluesky"></i></a>
+      <div class="container-fluid d-flex align-items-center justify-content-center">
+        <a class="navbar-brand ms-2 " href="index.html" id="nav_logo"><i class="fa-brands me-1 fs-2 fa-bluesky"></i> social
+          communication</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse d-lg-block w-100" id="navbarNav">
-          <div class="d-flex justify-content-between flex-column  flex-lg-row  align-items-center ">
+          <div class="d-flex justify-content-between flex-row  flex-lg-row  align-items-center ">
             <ul class="navbar-nav ">
               <li class="nav-item">
-                <a class="nav-link active " aria-current="page" href="#">Home</a>
+                <a class="nav-link active  rounded-3 fs-5 me-2" aria-current="page" href="index.html">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">profile</a>
+                <a class="nav-link fs-5" href="profileReview.html">profile</a>
               </li>
             </ul>
 
-            <div class="d-flex align-items-lg-center flex-row flex-lg-row">
+            <div class="d-flex align-items-center flex-row flex-lg-row">
 
               <div class="form-check form-switch d-inline-block me-2">
                 <input class="form-check-input" type="checkbox" id="darkModeSwitch" checked>
@@ -437,27 +484,18 @@
         </div>
       </div>
     </nav>
-
     <div class="posts ">
 
     </div>
 
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.3/axios.min.js"
-    integrity="sha512-zJXKBryKlsiDaWcWQ9fuvy50SG03/Qc5SqfLXxHmk9XiUUbcD9lXYjHDBxLFOuZSU6ULXaJ69bd7blSMEgxXNQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="./asets/script.js"></script>
-  <script src="./asets/darkMode.js"></script>
+  <script  src="./asets/Libraries/jquery-3.3.1.slim.min.js"></script>
+  <script  src="./asets/Libraries/popper.min.js"></script>
+  <script  src="./asets/Libraries/boot_strap.min.js"></script>
+  <script  src="./asets/Libraries/bootstrap.min.js"></script>
+  <script  src="./asets/darkMode.js"></script>
+  <script async src="./asets/Libraries/axios.min.js"></script>
+  <script async src="./asets/script.js"></script>
 </body>
 
 </html>

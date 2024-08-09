@@ -11,12 +11,14 @@ function pagLode(lode) {
         $("nav").addClass("sticky-top")
     }
 }
-async function get_all_posts(url, oneTurn = false) {
+function get_all_posts(url, oneTurn = false) {
     if (oneTurn) {
         document.querySelector('.posts').innerHTML = "";
         console.log(oneTurn);
     }
-    let req = await fetch(url)
+    setTimeout(() => {
+        async function get() {
+            let req = await fetch(url)
     let data = await req.json()
 
     if (req.ok) {
@@ -24,21 +26,23 @@ async function get_all_posts(url, oneTurn = false) {
             let check_post
             if (localStorage.getItem("token")) {
                 let user_loginData = JSON.parse(localStorage.getItem("token"))
-                check_post = data.data[ele].author.id == user_loginData.user.id ? `<button class=" btn_edit btn btn-secondary me-4" data-post="${data.data[ele].title},${data.data[ele].body},${""},${data.data[ele].id}" onclick="edit_post(this)">Edit</button>`: ""
+                check_post = data.data[ele].author.id == user_loginData.user.id ? `<button class=" btn_edit btn btn-secondary me-4" data-post="${data.data[ele].title},${data.data[ele].body},${""},${data.data[ele].id}" onclick="edit_post(this)">Edit</button><button class=" btn btn-danger me-4" data-post="${data.data[ele].id}" onclick="delete_post(this)" data-toggle="modal" data-target="#confirm_delete">Delete</button>` : ""
             }
             document.querySelector('.posts').innerHTML +=
-            `
-        <div  class="card card_body bg-body-tertiary mb-3"   >
+                `
+        <div  class="post card card_body bg-body-tertiary mb-3 h-75"  style="cursor: pointer;" >
                     <div id="card_hdr" data-card_id="${data.data[ele].id}" class="d-flex p-2 align-items-center justify-content-between  " >
-                    <div class="d-flex align-items-center ">
+                    <div class="d-flex align-items-center" data-id="${data.data[ele].author.id}" onclick="profile_preview(this)" >
                     <img src="${data.data[ele].author.profile_image}" width="60px"  alt="" class="rounded-circle d-inline-block m-3 border border-black border-opacity-20" >
                     <h2 class="fs-6 text-capitalize fw-bold">@${data.data[ele].author.name}</h2>
                     </div>
+                    <div class="d-flex flex-row-reverse">
                     ${localStorage.getItem("token") ? check_post : ""}
                     </div>
+                    </div>
                     <div id="${data.data[ele].id}" onclick = "postReview(${data.data[ele].id})" >
-                    <div class="p-3">
-                    <img src="${data.data[ele].image}" height=" 300px"  class="card-img-top object-fit-cover" alt="...">
+                    <div class="p-3 body__img">
+                    <img class="" src="${data.data[ele].image}" height=" 300px"  class="card-img-top object-fit-cover" alt="...">
                     <div class="card-body" style="cursor: pointer;">
                     <p class="card-text"><small class="text-body-secondary">${data.data[ele].created_at}</small></p>
                     <h2>${data.data[ele].title}</h2>
@@ -66,6 +70,10 @@ async function get_all_posts(url, oneTurn = false) {
         ui_login()
     }
     pagLode(false)
+        }
+        get()
+    }, 1000);
+    
 }
 let current_page = 2
 addEventListener("scroll", _ => {
@@ -432,9 +440,40 @@ function handelBtn_creatPost_And_edite(E_title, E_body, E_img) {
     }
 }
 
-function postReview(post_id){
-localStorage.setItem("postDetails",post_id)
-location.assign("postReview.html")
+function postReview(post_id) {
+    localStorage.setItem("postDetails", post_id);
+    location.assign("postReview.html");
 }
 
 
+function delete_post (element){
+let btn_delete = document.querySelector('#btn_delete');
+btn_delete.addEventListener('click', () => {
+    let url = `https://tarmeezacademy.com/api/v1/posts/${element.dataset.post}`
+
+    let userData_fromLocal = JSON.parse(localStorage.getItem("token"))
+
+axios.delete(url, {
+            headers: {
+                "Authorization": `Bearer ${userData_fromLocal.token}`,
+                "Content-Type": 'multipart/form-data'
+            }
+        }).then(response => {
+            alert('You have successfully delete the post', 'success')
+            $("#confirm_delete").hide("fast");
+            $(".modal-backdrop").hide()
+            get_all_posts(`https://tarmeezacademy.com/api/v1/posts` , true)
+        })
+            .catch(error => {
+                console.log(error);
+                alert(error.response.data.message, 'danger')
+            })
+            
+
+});
+
+}
+
+function  profile_preview(element) {
+location.assign(`profileReview.html?userId=${element.dataset.id}`)
+}

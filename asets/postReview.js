@@ -166,7 +166,7 @@ function getPost_details(){
 
         document.body.querySelector(".posts").innerHTML = `
         
-         <div class="card card_body bg-body-tertiary mb-3" id="${result.id}"  >
+         <div class="card card_body bg-body-tertiary mb-3" id="${result.id}" style="cursor: pointer;" >
         <div class="d-flex p-2 align-items-center " >
             <img src="${result.author.profile_image}" width="60px"  alt="" class="rounded-circle d-inline-block m-3 border border-black border-opacity-20" >
             <h2 class="fs-6 text-capitalize fw-bold">@${result.author.name}</h2>
@@ -244,3 +244,4 @@ function addComment(target){
     .catch(error => alert(error.response.data.message,"danger"))
     console.log(data_field_comment);
 }
+
