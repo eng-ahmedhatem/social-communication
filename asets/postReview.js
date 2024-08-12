@@ -17,7 +17,6 @@ function ui_login() {
         $("#user__img").show();
         $("#user__name").show();
         $("#user__name").html(user_loginData.user.name)
-       
         if (user_loginData.user.profile_image.length > 1) {
             document.querySelector("#user__img").src = user_loginData.user.profile_image
         } else {
@@ -77,22 +76,16 @@ async function login(url, e) {
                     alert('You have successfully logged in.', 'success')
                     $("#content_login").hide("fast");
                     $(".modal-backdrop").hide()
-
                 }
             }).catch(error => {
                 pagLode(false)
                 console.log(error)
             })
-
-
     }
-
 }
 document.querySelector('#login').addEventListener("click", e => {
     login("https://tarmeezacademy.com/api/v1/login", e)
 })
-
-
 function alert(message, type) {
     const alertPlaceholder = document.querySelector('#alert')
     const appendAlert = (message, type) => {
@@ -103,14 +96,11 @@ function alert(message, type) {
             '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
             '</div>'
         ].join('')
-
         alertPlaceholder.append(wrapper)
         setTimeout(_ => {
             alertPlaceholder.innerHTML = ""
         }, 5000)
     }
-
-
     appendAlert(message, type)
 }
 $("#signOut_btn").click(_ => {
@@ -118,7 +108,6 @@ $("#signOut_btn").click(_ => {
     localStorage.removeItem("token")
     ui_login()
     alert("You have been successfully logged out.", "info")
-
 })
 ui_login()
 let [re_user_password, re_user_name, re_user_userName, re_user_img, re_user_email] = [document.querySelector('#re-user-password'), document.querySelector('#re-user-name'), document.querySelector('#re-user-userName'), document.querySelector('#re-user-img'), document.querySelector('#re-user-email')]
@@ -132,7 +121,6 @@ async function register() {
     }
     formData.append("name", re_user_name.value)
     formData.append("email", re_user_email.value)
-
     axios.post(url, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -149,9 +137,7 @@ async function register() {
             console.log(error);
             alert(error.response.data.message, 'danger')
         })
-
 }
-
 document.querySelector('#goRegister').addEventListener("click", _ => {
     register()
 })
@@ -161,13 +147,10 @@ function getPost_details(){
     axios.get(url)
     .then(response => {
         let result = response.data.data
-        console.log(result)
                 $("#user__namePost").html(result.author.name)
-
         document.body.querySelector(".posts").innerHTML = `
-        
          <div class="card card_body bg-body-tertiary mb-3" id="${result.id}" style="cursor: pointer;" >
-        <div class="d-flex p-2 align-items-center " >
+        <div class="d-flex p-2 align-items-center data-test="" data-id="${result.author.id}" onclick="profile_preview(this)" " >
             <img src="${result.author.profile_image}" width="60px"  alt="" class="rounded-circle d-inline-block m-3 border border-black border-opacity-20" >
             <h2 class="fs-6 text-capitalize fw-bold">@${result.author.name}</h2>
         </div>
@@ -183,11 +166,9 @@ function getPost_details(){
         <i class="fa-solid fa-pen fa-fade"></i>
         <span>(${result.comments_count}) comment</span>
         <span id="tags-${result.id}"></span>
-        
         </div>
         <hr>
         <ul id="comments" class="list-group list-group-flush">
-
         </ul>
         <div class="input-group my-3">
           <input id="field_comment" type="text" class="form-control" placeholder="add new comment" aria-label="Recipient's username" aria-describedby="basic-addon2">
@@ -203,7 +184,6 @@ function getPost_details(){
         }else{
             $("#btn_addComment").attr('onclick','')
             $("#btn_addComment").addClass("opacity-25").css({"cursor": "not-allowed"})
-            
         }
         document.querySelector('#comments').innerHTML = ""
     for(let comment of result.comments){
@@ -228,7 +208,6 @@ function getPost_details(){
     .catch(error => console.log(error))
 }
 getPost_details()
-
 function addComment(target){
     let userData = JSON.parse(localStorage.getItem("token"))
     let url =  `https://tarmeezacademy.com/api/v1/posts/${localStorage.getItem("postDetails")}/comments`
@@ -244,4 +223,7 @@ function addComment(target){
     .catch(error => alert(error.response.data.message,"danger"))
     console.log(data_field_comment);
 }
-
+function  profile_preview(element) {
+    console.log(element.dataset.id);
+    location.assign(`profileReview.html?userId=${element.dataset.id}`)
+    }

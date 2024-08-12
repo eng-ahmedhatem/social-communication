@@ -26,7 +26,6 @@ function handelBtn_creatPost_And_edite(E_title, E_body, E_img) {
           </button>
         </div>
         <div class="modal-body ">
-
           <div data-mdb-input-init class="form-outline flex-fill mb-2 ">
             <label class="form-label" for="post_title">Post Title</label>
             <input type="text" id="post_title" class="form-control" value = "${E_title}" />
@@ -40,17 +39,12 @@ function handelBtn_creatPost_And_edite(E_title, E_body, E_img) {
             <input type="file" class="form-control  " id="post-user-img">
           </div>
           <button id="go_newpost" class="btn btn-primary w-100" onclick="go_edit_post()" >Edit</button>
-
-
         </div>
-
       </div>
     </div>
-    
     `);
     }
 }
-
 function pagLode(lode) {
     if (lode) {
         $("#loading").show("fast")
@@ -69,7 +63,6 @@ function ui_login() {
         $("#user__img").show();
         $("#user__name").show();
         $("#user__name").html(user_loginData.user.name)
-
         if (user_loginData.user.profile_image.length > 1) {
             document.querySelector("#user__img").src = user_loginData.user.profile_image
         } else {
@@ -129,22 +122,16 @@ async function login(url, e) {
                     alert('You have successfully logged in.', 'success')
                     $("#content_login").hide("fast");
                     $(".modal-backdrop").hide()
-
                 }
             }).catch(error => {
                 pagLode(false)
                 console.log(error)
             })
-
-
     }
-
 }
 document.querySelector('#login').addEventListener("click", e => {
     login("https://tarmeezacademy.com/api/v1/login", e)
 })
-
-
 function alert(message, type) {
     const alertPlaceholder = document.querySelector('#alert')
     const appendAlert = (message, type) => {
@@ -155,14 +142,11 @@ function alert(message, type) {
             '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
             '</div>'
         ].join('')
-
         alertPlaceholder.append(wrapper)
         setTimeout(_ => {
             alertPlaceholder.innerHTML = ""
         }, 5000)
     }
-
-
     appendAlert(message, type)
 }
 $("#signOut_btn").click(_ => {
@@ -170,7 +154,6 @@ $("#signOut_btn").click(_ => {
     localStorage.removeItem("token")
     ui_login()
     alert("You have been successfully logged out.", "info")
-
 })
 ui_login()
 let [re_user_password, re_user_name, re_user_userName, re_user_img, re_user_email] = [document.querySelector('#re-user-password'), document.querySelector('#re-user-name'), document.querySelector('#re-user-userName'), document.querySelector('#re-user-img'), document.querySelector('#re-user-email')]
@@ -184,7 +167,6 @@ async function register() {
     }
     formData.append("name", re_user_name.value)
     formData.append("email", re_user_email.value)
-
     axios.post(url, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -201,25 +183,20 @@ async function register() {
             console.log(error);
             alert(error.response.data.message, 'danger')
         })
-
 }
-
 document.querySelector('#goRegister').addEventListener("click", _ => {
     register()
 })
 pagLode(false)
-
-
 let userId = new URLSearchParams(location.search)
 if (userId.has("userId")) {
     user__id = userId.get("userId")
     axios.get("https://tarmeezacademy.com/api/v1/users/" + user__id).then(data => {
         console.log(data.data.data);
         $(".user_info").html(`
-
         <div class="col-12 col-md-6 d-flex  align-items-center  ">
-        <div class="img p-3 me-4 overflow-hidden border rounded-circle border-danger border-opacity-75">
-          <img src="${data.data.data.profile_image}" class="rounded-circle" width="150px" height="150px" alt="">
+        <div class="img p-2 me-4 overflow-hidden border rounded-circle border-danger border-opacity-75">
+          <img src="${data.data.data.profile_image}" class="rounded-circle " width="110px" height="110px" alt="">
         </div>
         <div class="text " >
           <h5 class="fw-bold mb-1" id="user_email">${data.data.data.email}</h5>
@@ -231,12 +208,10 @@ if (userId.has("userId")) {
         <p class="fs-4"><span class="fw-light " style="font-size: 70px; ">${data.data.data.comments_count}</span><span style="color: #777;">comment</span></p>
         <p class="fs-4"><span class="fw-light " style="font-size: 70px; ">${data.data.data.posts_count}</span><span style="color: #777;">post</span></p>
       </div>
-            
             `)
             $("#user_namePosts").html(data.data.data.name)
         getCurrent_userPost(user__id)
     })
-
 } else if (localStorage.getItem("token")) {
     let data_user = JSON.parse(localStorage.getItem("token"))
     console.log(data_user);
@@ -244,10 +219,9 @@ if (userId.has("userId")) {
     user__id = data_user.user.id
     $("#user_namePosts").html(data_user.user.name)
     $(".user_info").html(`
-        
         <div class="col-12 col-md-6 d-flex  align-items-center  ">
-        <div class="img p-3 me-4 overflow-hidden border rounded-circle border-danger border-opacity-75">
-          <img src="${data_user.user.profile_image}" class="rounded-circle" width="150px" height="150px" alt="">
+        <div class="img p-2 me-4 overflow-hidden border rounded-circle border-danger border-opacity-75">
+          <img src="${data_user.user.profile_image}" class="rounded-circle" width="110px" height="110px" alt="">
         </div>
         <div class="text " >
           <h5 class="fw-bold mb-1" id="user_email">${data_user.user.email}</h5>
@@ -259,9 +233,7 @@ if (userId.has("userId")) {
         <p class="fs-4"><span class="fw-light " style="font-size: 70px; ">${data_user.user.comments_count}</span><span style="color: #777;">comment</span></p>
         <p class="fs-4"><span class="fw-light " style="font-size: 70px; ">${data_user.user.posts_count}</span><span style="color: #777;">post</span></p>
       </div>
-        
         `)
-
 } else {
     location.replace("index.html")
 }
@@ -274,7 +246,6 @@ async function getCurrent_userPost(user_id) {
             async function get() {
                 let req = await fetch(url)
                 let data = await req.json()
-
                 if (req.ok) {
                     for (let ele in Array.from(data.data)) {
                         let check_post
@@ -284,8 +255,8 @@ async function getCurrent_userPost(user_id) {
                         }
                         document.querySelector('.posts').innerHTML +=
                             `
-        <div  class="post card card_body bg-body-tertiary mb-3 h-75"   >
-                    <div id="card_hdr" data-card_id="${data.data[ele].id}" class="d-flex p-2 align-items-center justify-content-between  " >
+        <div  class="post card card_body bg-body-tertiary mb-3 h-75 style="cursor: pointer;""   >
+                    <div id="card_hdr" data-card_id="${data.data[ele].id}" style="cursor: pointer;" class="d-flex p-2 align-items-center justify-content-between  " >
                     <div class="d-flex align-items-center" data-id="${data.data[ele].author.id}" onclick="profile_preview(this)" >
                     <img src="${data.data[ele].author.profile_image}" width="60px"  alt="" class="rounded-circle d-inline-block m-3 border border-black border-opacity-20" >
                     <h2 class="fs-6 text-capitalize fw-bold">@${data.data[ele].author.name}</h2>
@@ -295,7 +266,7 @@ async function getCurrent_userPost(user_id) {
                     </div>
                     </div>
                     <div id="${data.data[ele].id}" onclick = "postReview(${data.data[ele].id})" >
-                    <div class="p-3 body__img">
+                    <div class="p-3 body__img" style="cursor: pointer;">
                     <img class="" src="${data.data[ele].image}" height=" 300px"  class="card-img-top object-fit-cover" alt="...">
                     <div class="card-body" style="cursor: pointer;">
                     <p class="card-text"><small class="text-body-secondary">${data.data[ele].created_at}</small></p>
@@ -312,7 +283,6 @@ async function getCurrent_userPost(user_id) {
                     </div>
                   </div>
         `
-
                         document.querySelector(`#tags-${data.data[ele].id}`).innerHTML = ""
                         for (tag of data.data[ele].tags) {
                             document.querySelector(`#tags-${data.data[ele].id}`).innerHTML += `
@@ -320,13 +290,11 @@ async function getCurrent_userPost(user_id) {
             `
                         }
                     }
-
                 }
                 pagLode(false)
             }
             get()
         }, 0);
-
     }
     get_all_posts(`https://tarmeezacademy.com/api/v1/users/${user_id}/posts`, true)
 }
@@ -362,13 +330,7 @@ async function new_post(post_edit_id) {
                 alert(error.response.data.message, 'danger')
             })
     }
-
 }
-
-
-
-
-
 const myModal = new bootstrap.Modal('#content_newPost');
 const modal = bootstrap.Modal.getInstance('#content_newPost');
 function edit_post(btn) {
@@ -385,12 +347,6 @@ function edit_post(btn) {
         modal.hide()
     })
 }
-
-
-
-
-
-
 function go_edit_post() {
     pagLode(true)
     new Promise((res, rej) => {
@@ -410,15 +366,11 @@ function go_edit_post() {
         pagLode(false)
     })
 }
-
-
 function delete_post(element) {
     let btn_delete = document.querySelector('#btn_delete');
     btn_delete.addEventListener('click', () => {
         let url = `https://tarmeezacademy.com/api/v1/posts/${element.dataset.post}`
-
         let userData_fromLocal = JSON.parse(localStorage.getItem("token"))
-
         axios.delete(url, {
             headers: {
                 "Authorization": `Bearer ${userData_fromLocal.token}`,
@@ -434,10 +386,7 @@ function delete_post(element) {
                 console.log(error);
                 alert(error.response.data.message, 'danger')
             })
-
-
     });
-
 }
 function postReview(post_id) {
     localStorage.setItem("postDetails", post_id);

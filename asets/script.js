@@ -1,6 +1,5 @@
 // * This variable specifies the state of the add and edit module.
 let btn_module = "N"
-
 handelBtn_creatPost_And_edite()
 function pagLode(lode) {
     if (lode) {
@@ -20,7 +19,6 @@ function get_all_posts(url, oneTurn = false) {
         async function get() {
             let req = await fetch(url)
     let data = await req.json()
-
     if (req.ok) {
         for (let ele in data.data) {
             let check_post
@@ -58,7 +56,6 @@ function get_all_posts(url, oneTurn = false) {
                     </div>
                   </div>
         `
-
             document.querySelector(`#tags-${data.data[ele].id}`).innerHTML = ""
             for (tag of data.data[ele].tags) {
                 document.querySelector(`#tags-${data.data[ele].id}`).innerHTML += `
@@ -66,14 +63,12 @@ function get_all_posts(url, oneTurn = false) {
             `
             }
         }
-
         ui_login()
     }
     pagLode(false)
         }
         get()
     }, 1000);
-    
 }
 let current_page = 2
 addEventListener("scroll", _ => {
@@ -83,7 +78,6 @@ addEventListener("scroll", _ => {
     }
 })
 get_all_posts(`https://tarmeezacademy.com/api/v1/posts`)
-
 // ********* login 
 let [userName, userPassword, remember, show_form_log] = [document.querySelector('#user_name'), document.querySelector('#user_Password'), document.querySelector('#checkbox'), document.querySelector('#show_form_log')]
 show_form_log.addEventListener("click", _ => {
@@ -128,16 +122,12 @@ async function login(url, e) {
                     alert('You have successfully logged in.', 'success')
                     $("#content_login").hide("fast");
                     $(".modal-backdrop").hide()
-
                 }
             }).catch(error => {
                 pagLode(false)
                 console.log(error)
             })
-
-
     }
-
 }
 document.querySelector('#login').addEventListener("click", e => {
     let log = async function () {
@@ -146,8 +136,6 @@ document.querySelector('#login').addEventListener("click", e => {
     }
     log()
 })
-
-
 function alert(message, type) {
     const alertPlaceholder = document.querySelector('#alert')
     const appendAlert = (message, type) => {
@@ -158,14 +146,11 @@ function alert(message, type) {
             '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
             '</div>'
         ].join('')
-
         alertPlaceholder.append(wrapper)
         setTimeout(_ => {
             alertPlaceholder.innerHTML = ""
         }, 5000)
     }
-
-
     appendAlert(message, type)
 }
 $("#signOut_btn").click(_ => {
@@ -174,7 +159,6 @@ $("#signOut_btn").click(_ => {
     get_all_posts(`https://tarmeezacademy.com/api/v1/posts`, true)
     ui_login()
     alert("You have been successfully logged out.", "info")
-
 })
 function ui_login() {
     if (localStorage.getItem("token")) {
@@ -232,7 +216,6 @@ async function register() {
     }
     formData.append("name", re_user_name.value)
     formData.append("email", re_user_email.value)
-
     axios.post(url, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -249,13 +232,10 @@ async function register() {
             console.log(error);
             alert(error.response.data.message, 'danger')
         })
-
 }
-
 document.querySelector('#goRegister').addEventListener("click", _ => {
     register()
 })
-
 async function new_post(post_edit_id) {
     let userData_fromLocal = JSON.parse(localStorage.getItem("token"))
     let postBody = $("#post_pody").val()
@@ -309,9 +289,7 @@ async function new_post(post_edit_id) {
                 alert(error.response.data.message, 'danger')
             })
     }
-
 }
-
 function newPost() {
     pagLode(true)
     new Promise((res, rej) => {
@@ -330,7 +308,6 @@ function newPost() {
         pagLode(false)
     })
 }
-
 const myModal = new bootstrap.Modal('#content_newPost');
 const modal = bootstrap.Modal.getInstance('#content_newPost');
 function edit_post(btn) {
@@ -347,7 +324,6 @@ function edit_post(btn) {
         modal.hide()
     })
 }
-
 function go_edit_post() {
     pagLode(true)
     new Promise((res, rej) => {
@@ -381,7 +357,6 @@ function handelBtn_creatPost_And_edite(E_title, E_body, E_img) {
           </button>
         </div>
         <div class="modal-body ">
-
           <div data-mdb-input-init class="form-outline flex-fill mb-2 ">
             <label class="form-label" for="post_title">Post Title</label>
             <input type="text" id="post_title" class="form-control" />
@@ -396,12 +371,9 @@ function handelBtn_creatPost_And_edite(E_title, E_body, E_img) {
           </div>
           <button id="go_newpost" class="btn btn-primary w-100" onclick="newPost()" >Add</button>
         </div>
-
       </div>
     </div>
-            
             `)
-
     } else {
         $("#content_newPost").html(`
         <div class="modal-dialog" role="document">
@@ -415,7 +387,6 @@ function handelBtn_creatPost_And_edite(E_title, E_body, E_img) {
           </button>
         </div>
         <div class="modal-body ">
-
           <div data-mdb-input-init class="form-outline flex-fill mb-2 ">
             <label class="form-label" for="post_title">Post Title</label>
             <input type="text" id="post_title" class="form-control" value = "${E_title}" />
@@ -429,30 +400,21 @@ function handelBtn_creatPost_And_edite(E_title, E_body, E_img) {
             <input type="file" class="form-control  " id="post-user-img">
           </div>
           <button id="go_newpost" class="btn btn-primary w-100" onclick="go_edit_post()" >Edit</button>
-
-
         </div>
-
       </div>
     </div>
-    
     `);
     }
 }
-
 function postReview(post_id) {
     localStorage.setItem("postDetails", post_id);
     location.assign("postReview.html");
 }
-
-
 function delete_post (element){
 let btn_delete = document.querySelector('#btn_delete');
 btn_delete.addEventListener('click', () => {
     let url = `https://tarmeezacademy.com/api/v1/posts/${element.dataset.post}`
-
     let userData_fromLocal = JSON.parse(localStorage.getItem("token"))
-
 axios.delete(url, {
             headers: {
                 "Authorization": `Bearer ${userData_fromLocal.token}`,
@@ -468,12 +430,8 @@ axios.delete(url, {
                 console.log(error);
                 alert(error.response.data.message, 'danger')
             })
-            
-
 });
-
 }
-
 function  profile_preview(element) {
 location.assign(`profileReview.html?userId=${element.dataset.id}`)
 }
